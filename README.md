@@ -12,8 +12,7 @@
 8. [Business Recommendations](#8-business-recommendations)
 9. [Technologies Used](#9-technologies-used)
 10. [How To Run](#10-how-to-run)
-11. [Repository Structure](#11-repository-structure)
-12. [Conclusion](#12-conclusion)
+11. [Conclusion](#11-conclusion)
 
 ---
 
@@ -374,18 +373,7 @@ Recommended actions:
 
 ---
 
-## 11. Repository Structure
-
-```text
-.
-├── ML_Project.ipynb
-├── churn_predict.csv
-└── README.md
-```
-
----
-
-## 12. Conclusion
+## 11. Conclusion
 
 This project shows that churn prediction can help the company identify high-risk customers before they leave.
 
