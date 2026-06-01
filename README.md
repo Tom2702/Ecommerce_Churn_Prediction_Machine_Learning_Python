@@ -6,7 +6,7 @@
 
 This project analyzes customer churn behavior for an e-commerce company and builds machine learning models to predict whether a customer is likely to churn.
 
-In this project, I will:
+In this project, we will:
 
 - Load and inspect the e-commerce churn dataset.
 - Clean missing values and inconsistent category labels.
