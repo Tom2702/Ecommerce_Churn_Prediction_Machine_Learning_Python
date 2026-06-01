@@ -32,32 +32,7 @@ import seaborn as sns
 The dataset loader supports both Colab and local execution.
 
 ```python
-from pathlib import Path
-
-candidate_files = [
-    Path("/content/drive/MyDrive/Churn_prediction.xlsx"),
-    Path("/content/drive/MyDrive/churn_predict.csv"),
-    Path("Churn_prediction.xlsx"),
-    Path("churn_predict.csv"),
-]
-
-data_path = next((file for file in candidate_files if file.exists()), None)
-
-if data_path is None:
-    raise FileNotFoundError(
-        "Dataset not found. Please place churn_predict.csv or Churn_prediction.xlsx "
-        "in the notebook directory, or update candidate_files with the correct path."
-    )
-
-if data_path.suffix.lower() in [".xlsx", ".xls"]:
-    df = pd.read_excel(data_path)
-elif data_path.suffix.lower() == ".csv":
-    df = pd.read_csv(data_path)
-else:
-    raise ValueError(f"Unsupported file format: {data_path.suffix}")
-
-print(f"Loaded dataset: {data_path}")
-df.head()
+df = pd.read_excel("/content/drive/MyDrive/Churn_prediction.xlsx")
 ```
 
 Initial inspection is performed using:
@@ -67,16 +42,9 @@ df.head(5)
 df.shape
 df.info()
 ```
-
-### Result Placeholder
-
-```text
-Dataset shape:
-[Insert dataset shape here]
-
-Data types and missing overview:
-[Insert df.info() summary here]
-```
+<img width="2956" height="348" alt="image" src="https://github.com/user-attachments/assets/0aba9ea0-6e82-4ffb-bcd9-b46f5900b6a6" />
+<img width="152" height="138" alt="image" src="https://github.com/user-attachments/assets/4ec8b0f8-c6ce-45a8-b5b8-2a24a3521971" />
+<img width="668" height="806" alt="image" src="https://github.com/user-attachments/assets/25c8381e-d28e-4cf7-ba94-a82d9616abd8" />
 
 ---
 
@@ -98,19 +66,6 @@ cat_cols = cat_cols + [col for col in cat_manual if col in df.columns]
 
 This step is important because numerical and categorical variables are handled differently during EDA, preprocessing, and modeling.
 
-### Result Placeholder
-
-```text
-ID columns:
-[Insert ID columns]
-
-Numerical columns:
-[Insert numerical columns]
-
-Categorical columns:
-[Insert categorical columns]
-```
-
 ---
 
 ## 3. Data Distribution Analysis
@@ -122,7 +77,10 @@ The notebook analyzes the distribution of numerical and categorical features.
 ```python
 df[num_cols].describe().T
 
+    <img width="1097" height="536" alt="image" src="https://github.com/user-attachments/assets/49184275-8f63-48bd-bbcb-0dd1d8f3b427" />
+
 df[num_cols].skew()
+    <img width="463" height="587" alt="image" src="https://github.com/user-attachments/assets/711a96d1-d593-4941-9680-bbceb89eae85" />
 
 for col in num_cols:
     sns.histplot(df[col], kde=True)
