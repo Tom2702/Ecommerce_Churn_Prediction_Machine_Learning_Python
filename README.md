@@ -1,4 +1,7 @@
-# E-Commerce Churn Prediction
+# E-Commerce Churn Prediction | Machine Learning
+
+Author: Anh Tuan Nguyen  
+Tools Used: Python, pandas, numpy, matplotlib, seaborn, scikit-learn, Jupyter Notebook / Google Colab
 
 ## Table of Contents
 
@@ -9,18 +12,20 @@
 5. [Exploratory Data Analysis](#5-exploratory-data-analysis)
 6. [Supervised Learning](#6-supervised-learning)
 7. [Unsupervised Learning](#7-unsupervised-learning)
-8. [Business Recommendations](#8-business-recommendations)
-9. [Technologies Used](#9-technologies-used)
-10. [How To Run](#10-how-to-run)
-11. [Conclusion](#11-conclusion)
+8. [Results](#8-results)
+9. [Business Recommendations](#9-business-recommendations)
+10. [Technologies Used](#10-technologies-used)
+11. [How To Run](#11-how-to-run)
+12. [Repository Structure](#12-repository-structure)
+13. [Conclusion](#13-conclusion)
 
 ---
 
 ## 1. Background & Overview
 
-This project analyzes customer churn behavior for an e-commerce company and builds machine learning models to predict whether a customer is likely to churn.
+Customer churn is one of the key challenges for e-commerce businesses. When customers stop purchasing or interacting with the platform, the company loses future revenue and must spend more on customer acquisition.
 
-In addition to churn prediction, the project segments churned customers into different behavioral groups using clustering. This helps the business design more targeted promotion, retention, and win-back strategies instead of treating all churned customers the same way.
+This project analyzes customer churn behavior for an e-commerce company and builds machine learning models to predict whether a customer is likely to churn. In addition to churn prediction, the project segments churned customers into behavioral groups to support targeted retention and win-back strategies.
 
 The project combines:
 
@@ -29,7 +34,7 @@ The project combines:
 - Supervised machine learning for churn prediction
 - Hyperparameter tuning
 - Unsupervised learning for churned customer segmentation
-- Business recommendations for retention strategy
+- Business recommendations for customer retention
 
 ---
 
@@ -118,6 +123,11 @@ Features are separated into:
 - Categorical variables
 - Target variable
 
+The target variable is:
+
+```text
+Churn
+```
 
 ### 4.3 Data Distribution Analysis
 
@@ -138,7 +148,7 @@ Missing values are handled using:
 - Median values for numerical columns
 - Mode values for categorical columns
 
-Inconsistent category labels are also standardized.
+Inconsistent category labels are standardized.
 
 Examples:
 
@@ -191,6 +201,16 @@ These patterns suggest that churn is not caused by a single factor. Instead, chu
 - Delivery inconvenience
 - Weak promotion or cashback engagement
 - Lower app or website engagement
+
+### 5.3 Placeholder for EDA Visuals
+
+Add EDA screenshots or charts here after exporting them from the notebook.
+
+```markdown
+![Churn Distribution](images/churn_distribution.png)
+![Correlation Heatmap](images/correlation_heatmap.png)
+![Churn Rate by Category](images/churn_rate_by_category.png)
+```
 
 ---
 
@@ -297,9 +317,87 @@ Different churned customer segments require different retention or win-back stra
 
 ---
 
-## 8. Business Recommendations
+## 8. Results
 
-### 8.1 New Customer Retention
+This section is reserved for adding final project outputs, screenshots, model results, and clustering results.
+
+### 8.1 Model Comparison Result
+
+Add model comparison chart or table here.
+
+```markdown
+![Model Comparison](images/model_comparison.png)
+```
+
+Current model performance summary:
+
+| Model | Balanced Accuracy |
+|---|---:|
+| Logistic Regression | 0.805 |
+| Random Forest | 0.922 |
+| Tuned Random Forest | 0.956 |
+
+### 8.2 Best Model Result
+
+Best model:
+
+```text
+Tuned Random Forest Classifier
+```
+
+Best balanced accuracy:
+
+```text
+0.956
+```
+
+Placeholder for confusion matrix or classification report:
+
+```markdown
+![Confusion Matrix](images/confusion_matrix.png)
+![Classification Report](images/classification_report.png)
+```
+
+### 8.3 Feature Importance Result
+
+Add feature importance chart here.
+
+```markdown
+![Feature Importance](images/feature_importance.png)
+```
+
+Suggested points to describe:
+
+- Which variables are most important for churn prediction
+- Whether complaint, tenure, cashback, order count, or days since last order are strong churn indicators
+- How the business can use these variables for retention targeting
+
+### 8.4 Customer Segmentation Result
+
+Add churned customer clustering visuals here.
+
+```markdown
+![Elbow Method](images/elbow_method.png)
+![Churned Customer Segments](images/churned_customer_segments.png)
+```
+
+Suggested segment result table:
+
+| Segment | Main Characteristics | Suggested Action |
+|---|---|---|
+| Segment 0 | Add segment description | Add retention strategy |
+| Segment 1 | Add segment description | Add retention strategy |
+| Segment 2 | Add segment description | Add retention strategy |
+| Segment 3 | Add segment description | Add retention strategy |
+| Segment 4 | Add segment description | Add retention strategy |
+| Segment 5 | Add segment description | Add retention strategy |
+| Segment 6 | Add segment description | Add retention strategy |
+
+---
+
+## 9. Business Recommendations
+
+### 9.1 New Customer Retention
 
 Customers with short tenure are more likely to churn.
 
@@ -309,7 +407,7 @@ Recommended actions:
 - Provide onboarding messages or product recommendations.
 - Encourage second purchase through limited-time cashback.
 
-### 8.2 Complaint Handling
+### 9.2 Complaint Handling
 
 Customers who complain have higher churn risk.
 
@@ -319,7 +417,7 @@ Recommended actions:
 - Provide compensation vouchers after negative service experiences.
 - Track complaint history as an important churn risk signal.
 
-### 8.3 Personalized Promotion Strategy
+### 9.3 Personalized Promotion Strategy
 
 Customers differ in promotion sensitivity and order behavior.
 
@@ -329,7 +427,7 @@ Recommended actions:
 - Use cashback incentives for customers with low recent engagement.
 - Avoid giving the same promotion to all customers.
 
-### 8.4 Delivery Experience Improvement
+### 9.4 Delivery Experience Improvement
 
 Customers living farther from warehouses may experience delivery inconvenience.
 
@@ -339,7 +437,7 @@ Recommended actions:
 - Improve estimated delivery time communication.
 - Prioritize logistics improvement for high-risk regions.
 
-### 8.5 High-Value Customer Win-Back
+### 9.5 High-Value Customer Win-Back
 
 Some churned customers have high order count, high cashback, or longer tenure.
 
@@ -351,7 +449,7 @@ Recommended actions:
 
 ---
 
-## 9. Technologies Used
+## 10. Technologies Used
 
 - Python
 - pandas
@@ -364,7 +462,7 @@ Recommended actions:
 
 ---
 
-## 10. How To Run
+## 11. How To Run
 
 1. Clone this repository or download the project files.
 2. Place `churn_predict.csv` in the same directory as the notebook.
@@ -373,7 +471,23 @@ Recommended actions:
 
 ---
 
-## 11. Conclusion
+## 12. Repository Structure
+
+```text
+.
+├── ML_Project.ipynb
+├── churn_predict.csv
+├── images/
+│   ├── model_comparison.png
+│   ├── confusion_matrix.png
+│   ├── feature_importance.png
+│   └── churned_customer_segments.png
+└── README.md
+```
+
+---
+
+## 13. Conclusion
 
 This project shows that churn prediction can help the company identify high-risk customers before they leave.
 
@@ -382,4 +496,3 @@ The tuned Random Forest model achieved the best performance with a balanced accu
 Customer segmentation further shows that churned customers have different behavioral patterns. Therefore, retention strategies should be targeted by churn segment rather than applying one general promotion to all churned users.
 
 Overall, the project demonstrates how machine learning can support customer retention by combining predictive modeling, behavioral segmentation, and business-focused recommendations.
-
