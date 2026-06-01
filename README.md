@@ -1,21 +1,4 @@
-# E-Commerce Churn Prediction
-
-## Contents
-
-1. [Introduction](#1-introduction)
-2. [Dataset](#2-dataset)
-3. [Repository Structure](#3-repository-structure)
-4. [Load Data](#4-load-data)
-5. [Data Inspection](#5-data-inspection)
-6. [Data Cleaning](#6-data-cleaning)
-7. [Exploratory Data Analysis](#7-exploratory-data-analysis)
-8. [Supervised Learning](#8-supervised-learning)
-9. [Hyperparameter Tuning](#9-hyperparameter-tuning)
-10. [Model Evaluation](#10-model-evaluation)
-11. [Unsupervised Learning](#11-unsupervised-learning)
-12. [Results](#12-results)
-13. [Business Recommendations](#13-business-recommendations)
-14. [How to Run](#14-how-to-run)
+# E-Commerce Churn Prediction | Machine Learning
 
 ---
 
