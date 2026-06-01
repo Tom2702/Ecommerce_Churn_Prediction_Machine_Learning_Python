@@ -76,19 +76,6 @@ This repo contains the following main files and folders:
 ```text
 .
 ├── ML_Project.ipynb
-├── churn_predict.csv
-├── images/
-│   ├── churn_distribution.png
-│   ├── correlation_heatmap.png
-│   ├── model_comparison.png
-│   ├── confusion_matrix.png
-│   ├── roc_pr_curves.png
-│   ├── threshold_tuning.png
-│   ├── feature_importance.png
-│   ├── elbow_method.png
-│   └── churned_customer_segments_pca.png
-├── tuned_random_forest_churn_model.pkl
-├── standard_scaler.pkl
 └── README.md
 ```
 
