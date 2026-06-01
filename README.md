@@ -92,8 +92,12 @@ Notes:
 The notebook uses a flexible loader so the project can run in Google Colab or locally.
 
 ```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 df = pd.read_excel("/content/drive/MyDrive/Churn_prediction.xlsx")
-df.head()
 ```
 <img width="2956" height="347" alt="image" src="https://github.com/user-attachments/assets/e306e62a-8d3b-485d-bdaf-01b8ff70cec3" />
 
