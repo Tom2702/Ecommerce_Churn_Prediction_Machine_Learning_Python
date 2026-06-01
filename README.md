@@ -113,6 +113,9 @@ df.shape
 df.info()
 df.isnull().mean() * 100
 ```
+<img width="2964" height="349" alt="image" src="https://github.com/user-attachments/assets/6f0098be-37a8-4fb2-a6af-1300eb414f4b" />
+<img width="3095" height="51" alt="image" src="https://github.com/user-attachments/assets/6b01f466-718e-4e74-97af-4e1966b61d22" />
+<img width="696" height="719" alt="image" src="https://github.com/user-attachments/assets/22956209-f869-43f3-babf-a21659401a6c" />
 
 Feature groups are separated into ID, numerical, categorical, and target columns.
 
