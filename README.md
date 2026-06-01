@@ -43,7 +43,9 @@ df.shape
 df.info()
 ```
 <img width="2956" height="348" alt="image" src="https://github.com/user-attachments/assets/0aba9ea0-6e82-4ffb-bcd9-b46f5900b6a6" />
+
 <img width="152" height="138" alt="image" src="https://github.com/user-attachments/assets/4ec8b0f8-c6ce-45a8-b5b8-2a24a3521971" />
+
 <img width="668" height="806" alt="image" src="https://github.com/user-attachments/assets/25c8381e-d28e-4cf7-ba94-a82d9616abd8" />
 
 ---
