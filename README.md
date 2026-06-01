@@ -1,58 +1,43 @@
-# E-Commerce Churn Prediction | Machine Learning
+# E-Commerce Churn Prediction
 
-Author: Anh Tuan Nguyen  
-Tools Used: Python, pandas, numpy, matplotlib, seaborn, scikit-learn, Jupyter Notebook / Google Colab
+## Contents
 
-## Table of Contents
-
-1. [Background & Overview](#1-background--overview)
-2. [Project Objectives](#2-project-objectives)
-3. [Dataset Description](#3-dataset-description)
-4. [Project Workflow](#4-project-workflow)
-5. [Exploratory Data Analysis](#5-exploratory-data-analysis)
-6. [Supervised Learning](#6-supervised-learning)
-7. [Unsupervised Learning](#7-unsupervised-learning)
-8. [Results](#8-results)
-9. [Business Recommendations](#9-business-recommendations)
-10. [Technologies Used](#10-technologies-used)
-11. [How To Run](#11-how-to-run)
-12. [Repository Structure](#12-repository-structure)
-13. [Conclusion](#13-conclusion)
+1. [Introduction](#1-introduction)
+2. [Dataset](#2-dataset)
+3. [Repository Structure](#3-repository-structure)
+4. [Load Data](#4-load-data)
+5. [Data Inspection](#5-data-inspection)
+6. [Data Cleaning](#6-data-cleaning)
+7. [Exploratory Data Analysis](#7-exploratory-data-analysis)
+8. [Supervised Learning](#8-supervised-learning)
+9. [Hyperparameter Tuning](#9-hyperparameter-tuning)
+10. [Model Evaluation](#10-model-evaluation)
+11. [Unsupervised Learning](#11-unsupervised-learning)
+12. [Results](#12-results)
+13. [Business Recommendations](#13-business-recommendations)
+14. [How to Run](#14-how-to-run)
 
 ---
 
-## 1. Background & Overview
+## 1. Introduction
 
-Customer churn is one of the key challenges for e-commerce businesses. When customers stop purchasing or interacting with the platform, the company loses future revenue and must spend more on customer acquisition.
+This project analyzes customer churn behavior for an e-commerce company and builds machine learning models to predict whether a customer is likely to churn.
 
-This project analyzes customer churn behavior for an e-commerce company and builds machine learning models to predict whether a customer is likely to churn. In addition to churn prediction, the project segments churned customers into behavioral groups to support targeted retention and win-back strategies.
+In this project, I will:
 
-The project combines:
+- Load and inspect the e-commerce churn dataset.
+- Clean missing values and inconsistent category labels.
+- Analyze churn behavior across numerical and categorical variables.
+- Build classification models to predict churn.
+- Tune the best model using GridSearchCV.
+- Segment churned customers using K-Means clustering.
+- Provide business recommendations for customer retention.
 
-- Exploratory data analysis
-- Data cleaning and preprocessing
-- Supervised machine learning for churn prediction
-- Hyperparameter tuning
-- Unsupervised learning for churned customer segmentation
-- Business recommendations for customer retention
-
----
-
-## 2. Project Objectives
-
-The main objectives of this project are:
-
-1. Perform exploratory data analysis to understand customer behavior.
-2. Identify important factors related to customer churn.
-3. Clean and preprocess numerical and categorical features.
-4. Build supervised machine learning models to predict churn.
-5. Tune the best model using hyperparameter tuning.
-6. Segment churned customers using unsupervised learning.
-7. Provide business recommendations to reduce churn and improve retention.
+The main business goal is to help the company identify high-risk customers earlier and design more targeted retention campaigns.
 
 ---
 
-## 3. Dataset Description
+## 2. Dataset
 
 The dataset used in this project is:
 
@@ -60,29 +45,18 @@ The dataset used in this project is:
 churn_predict.csv
 ```
 
-The dataset contains customer profile, behavior, transaction, complaint, and promotion-related information.
+or, in the original notebook environment:
 
-### 3.1 Dataset Summary
+```text
+Churn_prediction.xlsx
+```
 
-Based on the notebook output:
-
-| Metric | Value |
-|---|---:|
-| Total records | `5,630` |
-| Total columns | `20` |
-| Non-churned customers | `4,682` |
-| Churned customers | `948` |
-| Churn rate | `16.84%` |
-| Non-churn rate | `83.16%` |
-
-The dataset is imbalanced, so model evaluation uses balanced accuracy and churn-class recall instead of relying only on normal accuracy.
-
-### 3.2 Main Columns
+Main fields include:
 
 | Column | Description |
 |---|---|
 | `CustomerID` | Unique customer ID |
-| `Churn` | Target variable indicating whether a customer churned |
+| `Churn` | Target variable, whether the customer churned |
 | `Tenure` | Customer tenure with the company |
 | `PreferredLoginDevice` | Preferred login device |
 | `CityTier` | Customer city tier |
@@ -91,7 +65,7 @@ The dataset is imbalanced, so model evaluation uses balanced accuracy and churn-
 | `Gender` | Customer gender |
 | `HourSpendOnApp` | Time spent on app or website |
 | `NumberOfDeviceRegistered` | Number of registered devices |
-| `PreferredOrderCat` | Preferred order category |
+| `PreferedOrderCat` | Preferred order category |
 | `SatisfactionScore` | Customer satisfaction score |
 | `MaritalStatus` | Customer marital status |
 | `NumberOfAddress` | Number of registered addresses |
@@ -101,164 +75,205 @@ The dataset is imbalanced, so model evaluation uses balanced accuracy and churn-
 | `DaySinceLastOrder` | Days since last order |
 | `CashbackAmount` | Cashback received by the customer |
 
-### 3.3 Target Variable
-
-The target variable is:
+Target variable:
 
 ```text
 Churn
 ```
-
-It indicates whether a customer has churned:
 
 - `0`: Not churned
 - `1`: Churned
 
 ---
 
-## 4. Project Workflow
+## 3. Repository Structure
 
-### 4.1 Data Loading and Initial Inspection
-
-The dataset is loaded and inspected using pandas functions such as:
-
-- `head()`
-- `shape`
-- `info()`
-- Missing value checks
-- Duplicate checks
-- Descriptive statistics
-
-### 4.2 Feature Classification
-
-Features are separated into:
-
-- ID columns
-- Numerical variables
-- Categorical variables
-- Target variable
-
-The target variable is:
+This repo contains the following main files and folders:
 
 ```text
-Churn
+.
+├── ML_Project.ipynb
+├── churn_predict.csv
+├── images/
+│   ├── churn_distribution.png
+│   ├── correlation_heatmap.png
+│   ├── model_comparison.png
+│   ├── confusion_matrix.png
+│   ├── roc_pr_curves.png
+│   ├── threshold_tuning.png
+│   ├── feature_importance.png
+│   ├── elbow_method.png
+│   └── churned_customer_segments_pca.png
+├── tuned_random_forest_churn_model.pkl
+├── standard_scaler.pkl
+└── README.md
 ```
 
-### 4.3 Data Distribution Analysis
+Notes:
 
-The project analyzes the distribution of numerical and categorical variables using:
-
-- Descriptive statistics
-- Skewness analysis
-- Histograms
-- Count plots
-- Boxplots
-
-This step helps identify skewed variables, outliers, class imbalance, and customer behavior patterns.
-
-### 4.4 Missing Values and Data Cleaning
-
-Missing values are handled using:
-
-- Median values for numerical columns
-- Mode values for categorical columns
-
-Inconsistent category labels are standardized.
-
-Examples:
-
-| Original Value | Standardized Value |
-|---|---|
-| `COD` | `Cash on Delivery` |
-| `CC` | `Credit Card` |
-| `Mobile` | `Mobile Phone` |
-
-### 4.5 Feature and Churn Relationship Analysis
-
-The relationship between customer features and churn is analyzed using:
-
-- Grouped descriptive statistics
-- Boxplots by churn status
-- Correlation heatmap
-- Churn rate by category
-
-Important churn-related factors include:
-
-- Tenure
-- Complaint status
-- Cashback amount
-- Warehouse-to-home distance
-- Order behavior
-- Days since last order
-- Customer engagement
+- `ML_Project.ipynb` contains the full analysis and model-building workflow.
+- `images/` is reserved for charts exported from the notebook.
+- `.pkl` files are optional outputs after running the model-saving cells.
 
 ---
 
-## 5. Exploratory Data Analysis
+## 4. Load Data
 
-### 5.1 Data Quality Overview
+The notebook uses a flexible loader so the project can run in Google Colab or locally.
 
-The notebook identified missing values in several numerical columns. Missing values were handled using median imputation for numerical variables and mode imputation for categorical variables.
+```python
+from pathlib import Path
+import pandas as pd
 
-Highest missing value rates:
+candidate_files = [
+    Path("/content/drive/MyDrive/Churn_prediction.xlsx"),
+    Path("/content/drive/MyDrive/churn_predict.csv"),
+    Path("Churn_prediction.xlsx"),
+    Path("churn_predict.csv"),
+]
 
-| Column | Missing Rate |
-|---|---:|
-| `DaySinceLastOrder` | `5.45%` |
-| `OrderAmountHikeFromlastYear` | `4.71%` |
-| `Tenure` | `4.69%` |
-| `OrderCount` | `4.58%` |
-| `CouponUsed` | `4.55%` |
-| `HourSpendOnApp` | `4.53%` |
-| `WarehouseToHome` | `4.46%` |
+data_path = next((file for file in candidate_files if file.exists()), None)
 
-The missing value level is moderate and can be handled without dropping a large number of records.
+if data_path is None:
+    raise FileNotFoundError("Dataset not found. Please update the dataset path.")
 
-### 5.2 Churned Customer Behavior
+if data_path.suffix.lower() in [".xlsx", ".xls"]:
+    df = pd.read_excel(data_path)
+elif data_path.suffix.lower() == ".csv":
+    df = pd.read_csv(data_path)
 
-The analysis shows clear behavioral differences between churned and retained customers.
+print(f"Loaded dataset: {data_path}")
+df.head()
+```
 
-| Metric | Non-Churn Mean | Churn Mean | Interpretation |
-|---|---:|---:|---|
-| `Tenure` | `11.40` | `3.86` | Churned customers have much shorter tenure |
-| `WarehouseToHome` | `15.31` | `16.86` | Churned customers live slightly farther from warehouse |
-| `NumberOfDeviceRegistered` | `3.64` | `3.93` | Churned customers register slightly more devices |
-| `Complain` | `0.27` | `0.54` | Churned customers complain more often |
-| `DaySinceLastOrder` | `4.71` | `3.22` | Churned customers show different recent order behavior |
-| `CashbackAmount` | `180.64` | `160.37` | Churned customers receive lower cashback on average |
+---
 
-The strongest difference is tenure: the median tenure of churned customers is `1`, compared with `10` for non-churned customers.
+## 5. Data Inspection
 
-### 5.3 Churn Rate by Customer Attribute
+Basic inspection is performed to understand dataset size, columns, data types, and missing values.
 
-Several customer attributes show higher churn risk.
+```python
+df.head()
+df.shape
+df.info()
+df.isnull().mean() * 100
+```
 
-| Feature | Highest-Risk Group | Churn Rate |
-|---|---|---:|
-| `Complain` | Customers with complaint | `31.67%` |
-| `PreferredOrderCat` | Mobile Phone | `27.40%` |
-| `MaritalStatus` | Single | `26.73%` |
-| `PreferredPaymentMode` | Cash on Delivery | `24.90%` |
-| `PreferredPaymentMode` | E wallet | `22.80%` |
-| `CityTier` | Tier 3 | `21.37%` |
-| `PreferredLoginDevice` | Computer | `19.83%` |
-| `SatisfactionScore` | Score 5 | `23.83%` |
+Feature groups are separated into ID, numerical, categorical, and target columns.
 
-### 5.4 Business Interpretation
+```python
+id_cols = ["CustomerID"]
+cat_manual = ["Churn", "Complain", "CityTier", "SatisfactionScore"]
 
-Churn risk is associated with a combination of short tenure, complaints, lower cashback, product preference, payment method, and city tier.
+num_cols = df.select_dtypes(include="number").columns.tolist()
+num_cols = [col for col in num_cols if col not in id_cols and col not in cat_manual]
 
-Key interpretation:
+cat_cols = df.select_dtypes(include="object").columns.tolist()
+cat_cols = cat_cols + [col for col in cat_manual if col in df.columns]
+```
 
-- Newer customers are more vulnerable to churn.
-- Complaint history is a strong churn signal.
-- Customers preferring Mobile Phone category show higher churn risk.
-- Customers using Cash on Delivery or E-wallet show higher churn rates than credit/debit card users.
-- Tier 3 city customers may need additional delivery or service support.
+---
 
-### 5.5 Placeholder for EDA Visuals
+## 6. Data Cleaning
 
-After running the notebook, add exported EDA images here if needed.
+Missing values are handled using median values for numerical columns and mode values for categorical columns.
+
+```python
+for col in num_cols:
+    df[col] = df[col].fillna(df[col].median())
+
+for col in cat_cols:
+    df[col] = df[col].fillna(df[col].mode()[0])
+```
+
+Inconsistent category labels are standardized.
+
+```python
+if "PreferredLoginDevice" in df.columns:
+    df["PreferredLoginDevice"] = df["PreferredLoginDevice"].replace({
+        "Phone": "Mobile Phone",
+        "Mobile": "Mobile Phone",
+    })
+
+if "PreferredPaymentMode" in df.columns:
+    df["PreferredPaymentMode"] = df["PreferredPaymentMode"].replace({
+        "COD": "Cash on Delivery",
+        "CC": "Credit Card",
+    })
+
+order_cat_col = None
+for possible_col in ["PreferedOrderCat", "PreferredOrderCat"]:
+    if possible_col in df.columns:
+        order_cat_col = possible_col
+        break
+
+if order_cat_col is not None:
+    df[order_cat_col] = df[order_cat_col].replace({
+        "Mobile": "Mobile Phone",
+    })
+```
+
+---
+
+## 7. Exploratory Data Analysis
+
+The EDA section analyzes both numerical and categorical variables.
+
+### 7.1 Numerical Distribution
+
+```python
+df[num_cols].describe().T
+
+df[num_cols].skew()
+
+for col in num_cols:
+    sns.histplot(df[col], kde=True)
+    plt.title(f"Distribution of {col}")
+    plt.show()
+```
+
+### 7.2 Categorical Distribution
+
+```python
+for col in cat_cols:
+    print(col)
+    print(df[col].value_counts())
+    print(df[col].value_counts(normalize=True) * 100)
+```
+
+### 7.3 Relationship Between Features and Churn
+
+```python
+df.groupby("Churn")[num_cols].mean()
+df.groupby("Churn")[num_cols].median()
+
+for col in num_cols:
+    sns.boxplot(data=df, x="Churn", y=col)
+    plt.title(f"{col} by Churn")
+    plt.show()
+```
+
+Correlation heatmap:
+
+```python
+plt.figure(figsize=(12, 8))
+sns.heatmap(df[num_cols + ["Churn"]].corr(), annot=True, cmap="coolwarm")
+plt.title("Correlation Heatmap")
+plt.show()
+```
+
+Churn rate by category:
+
+```python
+for col in cat_cols:
+    if col != "Churn":
+        churn_rate = df.groupby(col)["Churn"].mean().sort_values(ascending=False)
+        print(churn_rate)
+```
+
+### 7.4 Result Placeholder
+
+Add EDA charts here after exporting images from the notebook.
 
 ```markdown
 ![Churn Distribution](images/churn_distribution.png)
@@ -266,194 +281,283 @@ After running the notebook, add exported EDA images here if needed.
 ![Churn Rate by Category](images/churn_rate_by_category.png)
 ```
 
-
 ---
 
-## 6. Supervised Learning
+## 8. Supervised Learning
 
-The project uses supervised learning to predict whether a customer is likely to churn.
+The project uses supervised learning to predict customer churn.
 
-### 6.1 Models Used
-
-The following models are tested:
+Models used:
 
 1. Logistic Regression
 2. Random Forest Classifier
-3. Tuned Random Forest Classifier using GridSearchCV
+3. Tuned Random Forest Classifier
 
-### 6.2 Preprocessing
+### 8.1 Train-Test Split
 
-Preprocessing steps include:
+```python
+from sklearn.model_selection import train_test_split
 
-- Removing `CustomerID` because it is only an identifier
-- Using `Churn` as the target variable
-- One-hot encoding categorical variables
-- Applying standard scaling for Logistic Regression
-- Splitting the dataset into training and testing sets
-- Using stratified sampling to preserve churn class distribution
+model_cat_cols = [col for col in cat_cols if col != "Churn"]
+df_encoded = pd.get_dummies(df, columns=model_cat_cols, drop_first=True, dtype=int)
 
-### 6.3 Evaluation Metric
+x = df_encoded.drop(columns=["CustomerID", "Churn"])
+y = df_encoded["Churn"]
 
-Balanced accuracy is used because the churn classes are imbalanced.
-
-Balanced accuracy is more suitable than normal accuracy when one class appears much more frequently than the other.
-
-### 6.4 Model Performance
-
-| Model | Balanced Accuracy |
-|---|---:|
-| Logistic Regression | 0.805 |
-| Random Forest | 0.922 |
-| Tuned Random Forest | 0.956 |
-
-The tuned Random Forest model achieved the best performance.
-
-### 6.5 Best Model Parameters
-
-The best Random Forest parameters are:
-
-```text
-bootstrap: False
-max_depth: None
-min_samples_leaf: 2
-min_samples_split: 5
-n_estimators: 200
+x_train, x_test, y_train, y_test = train_test_split(
+    x,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y,
+)
 ```
 
-### 6.6 Model Result Interpretation
+### 8.2 Logistic Regression
 
-The tuned Random Forest model performs best because it can capture non-linear relationships between customer behavior and churn.
+```python
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
 
-This is useful for churn prediction because churn behavior is usually influenced by multiple interacting factors such as tenure, complaint history, order activity, cashback, and engagement.
+scaler = StandardScaler()
+x_train_scaled = scaler.fit_transform(x_train)
+x_test_scaled = scaler.transform(x_test)
+
+log_model = LogisticRegression(max_iter=1000, class_weight="balanced")
+log_model.fit(x_train_scaled, y_train)
+y_test_pred = log_model.predict(x_test_scaled)
+```
+
+### 8.3 Random Forest
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rf_model = RandomForestClassifier(
+    n_estimators=200,
+    random_state=42,
+    class_weight="balanced",
+)
+
+rf_model.fit(x_train, y_train)
+y_test_pred = rf_model.predict(x_test)
+```
 
 ---
 
-## 7. Unsupervised Learning
+## 9. Hyperparameter Tuning
 
-K-Means clustering is applied only to customers with:
+GridSearchCV is used to tune the Random Forest model.
 
-```text
-Churn == 1
+```python
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+    "n_estimators": [100, 200],
+    "max_depth": [None, 10, 20],
+    "min_samples_split": [2, 5],
+    "min_samples_leaf": [1, 2],
+    "bootstrap": [True, False],
+}
+
+grid_search = GridSearchCV(
+    estimator=rf_model,
+    param_grid=param_grid,
+    cv=5,
+    scoring="balanced_accuracy",
+)
+
+grid_search.fit(x_train, y_train)
+
+best_rf_model = grid_search.best_estimator_
+print(grid_search.best_params_)
 ```
 
-The purpose is to segment churned customers into different behavioral groups.
+Result placeholder:
 
-### 7.1 Clustering Workflow
-
-The clustering process includes:
-
-1. Filter churned customers.
-2. Remove ID and target columns.
-3. One-hot encode categorical variables.
-4. Scale features using `StandardScaler`.
-5. Use the Elbow Method to select the number of clusters.
-6. Train KMeans with `k = 7`.
-7. Compare numerical and categorical characteristics across segments.
-
-### 7.2 Segment Insights
-
-The churned customer segments show different behavioral patterns:
-
-1. Some segments contain new users with low tenure and low engagement.
-2. Some segments have high complaint rates, suggesting poor customer experience.
-3. Some groups have longer warehouse-to-home distances, indicating possible delivery inconvenience.
-4. Some churned users are high-value customers with high order count, high cashback, and longer tenure.
-
-### 7.3 Business Interpretation
-
-The segmentation results show that churned customers should not be treated as one single group.
-
-Different churned customer segments require different retention or win-back strategies:
-
-- New users may need onboarding support or welcome incentives.
-- Complaint-driven churners need service recovery and faster issue resolution.
-- Distance-sensitive customers may need delivery support.
-- High-value churned customers should receive personalized win-back offers.
+```text
+Best Parameters:
+[Insert best parameters here]
+```
 
 ---
 
-## 8. Results
+## 10. Model Evaluation
 
-This section summarizes the actual outputs from the notebook and provides placeholders for GitHub result images.
+Balanced accuracy is used because the churn dataset is imbalanced.
 
-### 8.1 Classification Model Results
+```python
+from sklearn.metrics import (
+    balanced_accuracy_score,
+    confusion_matrix,
+    classification_report,
+)
 
-The project tested three supervised learning models. Balanced accuracy was used because the churn class is imbalanced.
+y_pred_best_rf = best_rf_model.predict(x_test)
 
-| Model | Balanced Accuracy | Churn Precision | Churn Recall | Churn F1-score |
+print("Balanced Accuracy:", balanced_accuracy_score(y_test, y_pred_best_rf))
+print(confusion_matrix(y_test, y_pred_best_rf))
+print(classification_report(y_test, y_pred_best_rf))
+```
+
+Additional evaluation code was added for:
+
+- Confusion matrix
+- ROC Curve
+- Precision-Recall Curve
+- Threshold tuning
+- Feature importance
+
+### 10.1 Threshold Tuning
+
+```python
+y_proba_best_rf = best_rf_model.predict_proba(x_test)[:, 1]
+thresholds = np.arange(0.10, 0.91, 0.05)
+
+threshold_results = []
+for threshold in thresholds:
+    y_pred_threshold = (y_proba_best_rf >= threshold).astype(int)
+    threshold_results.append({
+        "Threshold": threshold,
+        "Balanced Accuracy": balanced_accuracy_score(y_test, y_pred_threshold),
+        "Precision": precision_score(y_test, y_pred_threshold, zero_division=0),
+        "Recall": recall_score(y_test, y_pred_threshold),
+        "F1-score": f1_score(y_test, y_pred_threshold),
+    })
+
+threshold_results_df = pd.DataFrame(threshold_results)
+threshold_results_df.head()
+```
+
+### 10.2 Feature Importance
+
+```python
+feature_importance_df = pd.DataFrame({
+    "Feature": x_train.columns,
+    "Importance": best_rf_model.feature_importances_,
+}).sort_values("Importance", ascending=False)
+
+feature_importance_df.head(20)
+```
+
+### 10.3 Save Model
+
+```python
+import joblib
+
+joblib.dump(best_rf_model, "tuned_random_forest_churn_model.pkl")
+joblib.dump(scaler, "standard_scaler.pkl")
+```
+
+---
+
+## 11. Unsupervised Learning
+
+K-Means clustering is applied only to churned customers.
+
+```python
+churn_df = df[df["Churn"] == 1].copy()
+cluster_data = churn_df.drop(columns=["CustomerID", "Churn"])
+cluster_data_encoded = pd.get_dummies(cluster_data, drop_first=True, dtype=int)
+```
+
+Scale features before K-Means:
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+cluster_data_scaled = scaler.fit_transform(cluster_data_encoded)
+```
+
+Elbow Method:
+
+```python
+from sklearn.cluster import KMeans
+
+inertia = []
+K_range = range(2, 20)
+
+for k in K_range:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(cluster_data_scaled)
+    inertia.append(kmeans.inertia_)
+
+plt.plot(K_range, inertia, marker="o")
+plt.xlabel("Number of Clusters")
+plt.ylabel("Inertia")
+plt.title("Elbow Method")
+plt.show()
+```
+
+Train final K-Means model:
+
+```python
+optimal_k = 7
+
+kmeans = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)
+churn_df["Segment"] = kmeans.fit_predict(cluster_data_scaled)
+```
+
+Cluster profiling:
+
+```python
+churn_df["Segment"].value_counts(normalize=True) * 100
+
+num_cols_cluster = churn_df.select_dtypes(include=np.number).columns.tolist()
+num_cols_cluster = [
+    col for col in num_cols_cluster
+    if col not in ["CustomerID", "Churn", "Segment"]
+]
+
+churn_df.groupby("Segment")[num_cols_cluster].mean().T
+```
+
+---
+
+## 12. Results
+
+This section is intentionally left with placeholders so final charts and outputs can be added after running the notebook.
+
+### 12.1 Dataset Result
+
+```text
+Dataset shape:
+[Insert dataset shape here]
+
+Churn distribution:
+[Insert churn distribution here]
+```
+
+### 12.2 EDA Result
+
+Add EDA charts here:
+
+```markdown
+![Churn Distribution](images/churn_distribution.png)
+![Correlation Heatmap](images/correlation_heatmap.png)
+![Churn Rate by Category](images/churn_rate_by_category.png)
+```
+
+Key EDA findings:
+
+```text
+[Insert main EDA insight 1]
+[Insert main EDA insight 2]
+[Insert main EDA insight 3]
+```
+
+### 12.3 Model Result
+
+Model comparison table:
+
+| Model | Balanced Accuracy | Precision | Recall | F1-score |
 |---|---:|---:|---:|---:|
-| Logistic Regression | `0.805` | `0.45` | `0.81` | `0.58` |
-| Random Forest | `0.922` | `0.95` | `0.85` | `0.90` |
-| Tuned Random Forest | `0.956` | `0.91` | `0.93` | `0.92` |
+| Logistic Regression | `[Insert]` | `[Insert]` | `[Insert]` | `[Insert]` |
+| Random Forest | `[Insert]` | `[Insert]` | `[Insert]` | `[Insert]` |
+| Tuned Random Forest | `[Insert]` | `[Insert]` | `[Insert]` | `[Insert]` |
 
-The tuned Random Forest model achieved the best balanced accuracy and the strongest churn recall.
-
-### 8.2 Best Model Result
-
-Best model:
-
-```text
-Tuned Random Forest Classifier
-```
-
-Best balanced accuracy:
-
-```text
-0.956
-```
-
-Best Random Forest parameters:
-
-```text
-bootstrap: False
-max_depth: None
-min_samples_leaf: 2
-min_samples_split: 5
-n_estimators: 200
-```
-
-### 8.3 Confusion Matrix Results
-
-#### Logistic Regression
-
-```text
-[[749 187]
- [ 36 154]]
-```
-
-Interpretation:
-
-- Logistic Regression catches many churned customers with recall `0.81`.
-- However, precision for churn is only `0.45`, meaning it creates many false churn alerts.
-
-#### Random Forest
-
-```text
-[[927   9]
- [ 28 162]]
-```
-
-Interpretation:
-
-- Random Forest improves both precision and recall.
-- It reduces false positives significantly compared with Logistic Regression.
-
-#### Tuned Random Forest
-
-```text
-[[918  18]
- [ 13 177]]
-```
-
-Interpretation:
-
-- Tuned Random Forest correctly identifies `177` out of `190` churned customers in the test set.
-- It misses only `13` churned customers.
-- This is the best model for proactive churn prevention.
-
-### 8.4 GitHub Result Image Placeholders
-
-After running the upgraded notebook, add exported images to the `images/` folder and reference them here.
+Add model result images here:
 
 ```markdown
 ![Model Comparison](images/model_comparison.png)
@@ -463,181 +567,79 @@ After running the upgraded notebook, add exported images to the `images/` folder
 ![Feature Importance](images/feature_importance.png)
 ```
 
-### 8.5 Feature Importance Result
-
-The upgraded notebook includes a feature importance section for the tuned Random Forest model.
-
-Use this section to explain:
-
-- Which variables have the strongest influence on churn prediction
-- Whether `Tenure`, `Complain`, `CashbackAmount`, `OrderCount`, or `DaySinceLastOrder` are key churn indicators
-- How the business can use important features to build churn monitoring rules
-
-Placeholder:
-
-```markdown
-![Feature Importance](images/feature_importance.png)
-```
-
-### 8.6 Churned Customer Segmentation Result
-
-KMeans clustering was applied only to churned customers.
+### 12.4 Best Model Result
 
 ```text
-Number of churned customers: 948
-Number of clusters: 7
+Best Model:
+[Insert best model name]
+
+Best Parameters:
+[Insert best model parameters]
+
+Best Balanced Accuracy:
+[Insert balanced accuracy]
 ```
 
-Segment distribution:
+### 12.5 Clustering Result
 
-| Segment | Share of Churned Customers |
-|---|---:|
-| Segment 3 | `31.65%` |
-| Segment 1 | `23.52%` |
-| Segment 2 | `19.51%` |
-| Segment 4 | `13.50%` |
-| Segment 6 | `7.59%` |
-| Segment 5 | `2.11%` |
-| Segment 0 | `2.11%` |
-
-### 8.7 Segment Profile and Suggested Actions
-
-| Segment | Key Characteristics From Notebook | Suggested Action |
-|---|---|---|
-| Segment 0 | Small group, higher tenure, high order count, very high cashback | Premium win-back offer for valuable lost customers |
-| Segment 1 | Larger group, moderate tenure, higher warehouse distance, moderate order count | Personalized retention offer and delivery support |
-| Segment 2 | Low tenure, lower cashback, high complaint rate | Complaint recovery and early-life retention campaign |
-| Segment 3 | Largest churned segment, low tenure, low cashback, low order count | Broad reactivation campaign with onboarding incentive |
-| Segment 4 | City Tier 3, high warehouse distance, high complaint rate, E-wallet dominant | Delivery support and service recovery campaign |
-| Segment 5 | Small group, higher order count, high cashback, longer inactivity | High-value reactivation with personalized category offer |
-| Segment 6 | UPI dominant, high warehouse distance, high complaint rate | Payment-experience review and delivery compensation |
-
-### 8.8 Clustering Result Image Placeholders
-
-After running the upgraded notebook, add clustering visuals here.
+Add clustering result images here:
 
 ```markdown
 ![Elbow Method](images/elbow_method.png)
 ![Churned Customer Segments PCA](images/churned_customer_segments_pca.png)
 ```
 
+Segment summary table:
+
+| Segment | Main Characteristics | Suggested Action |
+|---|---|---|
+| Segment 0 | `[Insert]` | `[Insert]` |
+| Segment 1 | `[Insert]` | `[Insert]` |
+| Segment 2 | `[Insert]` | `[Insert]` |
+| Segment 3 | `[Insert]` | `[Insert]` |
+| Segment 4 | `[Insert]` | `[Insert]` |
+| Segment 5 | `[Insert]` | `[Insert]` |
+| Segment 6 | `[Insert]` | `[Insert]` |
 
 ---
 
-## 9. Business Recommendations
+## 13. Business Recommendations
 
-### 9.1 New Customer Retention
+Based on the churn analysis and model outputs, recommended actions include:
 
-Customers with short tenure are more likely to churn.
+1. **New Customer Retention**
+   - Target customers with short tenure using welcome vouchers, onboarding messages, and second-purchase incentives.
 
-Recommended actions:
+2. **Complaint Handling**
+   - Prioritize customers who submitted complaints because complaint behavior is strongly related to churn risk.
 
-- Offer welcome vouchers for first-time customers.
-- Provide onboarding messages or product recommendations.
-- Encourage second purchase through limited-time cashback.
+3. **Personalized Promotions**
+   - Use churn probability and customer behavior to send targeted coupons or cashback offers instead of mass promotions.
 
-### 9.2 Complaint Handling
+4. **Delivery Experience Improvement**
+   - Review customers with high warehouse-to-home distance and offer delivery support where needed.
 
-Customers who complain have higher churn risk.
-
-Recommended actions:
-
-- Prioritize fast complaint resolution.
-- Provide compensation vouchers after negative service experiences.
-- Track complaint history as an important churn risk signal.
-
-### 9.3 Personalized Promotion Strategy
-
-Customers differ in promotion sensitivity and order behavior.
-
-Recommended actions:
-
-- Send personalized coupons to high-risk customers.
-- Use cashback incentives for customers with low recent engagement.
-- Avoid giving the same promotion to all customers.
-
-### 9.4 Delivery Experience Improvement
-
-Customers living farther from warehouses may experience delivery inconvenience.
-
-Recommended actions:
-
-- Provide delivery fee support for long-distance customers.
-- Improve estimated delivery time communication.
-- Prioritize logistics improvement for high-risk regions.
-
-### 9.5 High-Value Customer Win-Back
-
-Some churned customers have high order count, high cashback, or longer tenure.
-
-Recommended actions:
-
-- Create premium win-back campaigns for valuable churned customers.
-- Offer personalized discounts based on past preferred categories.
-- Assign higher retention priority to customers with strong historical value.
+5. **High-Value Win-Back**
+   - Identify churned customers with high historical value and send premium win-back offers.
 
 ---
 
-## 10. Technologies Used
+## 14. How to Run
 
-- Python
-- pandas
-- numpy
-- matplotlib
-- seaborn
-- scikit-learn
-- Jupyter Notebook
-- Google Colab
-
----
-
-## 11. How To Run
-
-1. Clone this repository or download the project files.
+1. Clone this repository.
 2. Place `churn_predict.csv` in the same directory as the notebook.
 3. Open `ML_Project.ipynb` in Jupyter Notebook or Google Colab.
-4. Run the cells from top to bottom.
+4. Run all cells from top to bottom.
+5. Export final charts to the `images/` folder.
+6. Update the `Results` section in this README with final outputs.
 
----
-
-## 12. Repository Structure
-
-```text
-.
-├── ML_Project.ipynb
-├── churn_predict.csv
-├── images/
-│   ├── model_comparison.png
-│   ├── confusion_matrix.png
-│   ├── feature_importance.png
-│   └── churned_customer_segments.png
-└── README.md
+```bash
+git clone https://github.com/Tom2702/ML_Ecommerce_Churn_Prediction_Python.git
+cd ML_Ecommerce_Churn_Prediction_Python
 ```
 
----
+Install required packages if needed:
 
-## 13. Conclusion
-
-This project shows that machine learning can help an e-commerce company identify high-risk customers before they leave.
-
-The dataset contains `5,630` customers, with `948` churned customers and a churn rate of `16.84%`. Because the target class is imbalanced, balanced accuracy and churn recall are more useful than normal accuracy alone.
-
-The tuned Random Forest model achieved the best performance:
-
-- Balanced Accuracy: `0.956`
-- Churn Precision: `0.91`
-- Churn Recall: `0.93`
-- Churn F1-score: `0.92`
-
-The model correctly identified most churned customers in the test set, missing only `13` churned customers. This makes it suitable for proactive retention targeting.
-
-The clustering analysis shows that churned customers are not one homogeneous group. Different churned segments show different patterns, such as low tenure, high complaint rate, long warehouse distance, high cashback, or high historical order count.
-
-Overall, the project demonstrates how supervised learning and customer segmentation can work together to support practical business actions:
-
-- Predict customers likely to churn
-- Understand churn drivers
-- Prioritize high-risk customers
-- Design targeted retention campaigns
-- Build segment-specific win-back strategies
-
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn joblib openpyxl
+```
