@@ -62,7 +62,22 @@ churn_predict.csv
 
 The dataset contains customer profile, behavior, transaction, complaint, and promotion-related information.
 
-### 3.1 Main Columns
+### 3.1 Dataset Summary
+
+Based on the notebook output:
+
+| Metric | Value |
+|---|---:|
+| Total records | `5,630` |
+| Total columns | `20` |
+| Non-churned customers | `4,682` |
+| Churned customers | `948` |
+| Churn rate | `16.84%` |
+| Non-churn rate | `83.16%` |
+
+The dataset is imbalanced, so model evaluation uses balanced accuracy and churn-class recall instead of relying only on normal accuracy.
+
+### 3.2 Main Columns
 
 | Column | Description |
 |---|---|
@@ -86,7 +101,7 @@ The dataset contains customer profile, behavior, transaction, complaint, and pro
 | `DaySinceLastOrder` | Days since last order |
 | `CashbackAmount` | Cashback received by the customer |
 
-### 3.2 Target Variable
+### 3.3 Target Variable
 
 The target variable is:
 
@@ -181,36 +196,76 @@ Important churn-related factors include:
 
 ## 5. Exploratory Data Analysis
 
-### 5.1 Churned Customer Behavior
+### 5.1 Data Quality Overview
 
-The analysis shows that churned users often have:
+The notebook identified missing values in several numerical columns. Missing values were handled using median imputation for numerical variables and mode imputation for categorical variables.
 
-- Shorter tenure
-- More complaints
-- Lower cashback amount
-- Lower engagement
-- Different order behavior compared to retained customers
-- Possible delivery inconvenience due to longer warehouse-to-home distance
+Highest missing value rates:
 
-### 5.2 Business Interpretation
+| Column | Missing Rate |
+|---|---:|
+| `DaySinceLastOrder` | `5.45%` |
+| `OrderAmountHikeFromlastYear` | `4.71%` |
+| `Tenure` | `4.69%` |
+| `OrderCount` | `4.58%` |
+| `CouponUsed` | `4.55%` |
+| `HourSpendOnApp` | `4.53%` |
+| `WarehouseToHome` | `4.46%` |
 
-These patterns suggest that churn is not caused by a single factor. Instead, churn may come from a combination of:
+The missing value level is moderate and can be handled without dropping a large number of records.
 
-- Poor customer experience
-- Low loyalty or short customer lifetime
-- Delivery inconvenience
-- Weak promotion or cashback engagement
-- Lower app or website engagement
+### 5.2 Churned Customer Behavior
 
-### 5.3 Placeholder for EDA Visuals
+The analysis shows clear behavioral differences between churned and retained customers.
 
-Add EDA screenshots or charts here after exporting them from the notebook.
+| Metric | Non-Churn Mean | Churn Mean | Interpretation |
+|---|---:|---:|---|
+| `Tenure` | `11.40` | `3.86` | Churned customers have much shorter tenure |
+| `WarehouseToHome` | `15.31` | `16.86` | Churned customers live slightly farther from warehouse |
+| `NumberOfDeviceRegistered` | `3.64` | `3.93` | Churned customers register slightly more devices |
+| `Complain` | `0.27` | `0.54` | Churned customers complain more often |
+| `DaySinceLastOrder` | `4.71` | `3.22` | Churned customers show different recent order behavior |
+| `CashbackAmount` | `180.64` | `160.37` | Churned customers receive lower cashback on average |
+
+The strongest difference is tenure: the median tenure of churned customers is `1`, compared with `10` for non-churned customers.
+
+### 5.3 Churn Rate by Customer Attribute
+
+Several customer attributes show higher churn risk.
+
+| Feature | Highest-Risk Group | Churn Rate |
+|---|---|---:|
+| `Complain` | Customers with complaint | `31.67%` |
+| `PreferredOrderCat` | Mobile Phone | `27.40%` |
+| `MaritalStatus` | Single | `26.73%` |
+| `PreferredPaymentMode` | Cash on Delivery | `24.90%` |
+| `PreferredPaymentMode` | E wallet | `22.80%` |
+| `CityTier` | Tier 3 | `21.37%` |
+| `PreferredLoginDevice` | Computer | `19.83%` |
+| `SatisfactionScore` | Score 5 | `23.83%` |
+
+### 5.4 Business Interpretation
+
+Churn risk is associated with a combination of short tenure, complaints, lower cashback, product preference, payment method, and city tier.
+
+Key interpretation:
+
+- Newer customers are more vulnerable to churn.
+- Complaint history is a strong churn signal.
+- Customers preferring Mobile Phone category show higher churn risk.
+- Customers using Cash on Delivery or E-wallet show higher churn rates than credit/debit card users.
+- Tier 3 city customers may need additional delivery or service support.
+
+### 5.5 Placeholder for EDA Visuals
+
+After running the notebook, add exported EDA images here if needed.
 
 ```markdown
 ![Churn Distribution](images/churn_distribution.png)
 ![Correlation Heatmap](images/correlation_heatmap.png)
 ![Churn Rate by Category](images/churn_rate_by_category.png)
 ```
+
 
 ---
 
@@ -319,23 +374,19 @@ Different churned customer segments require different retention or win-back stra
 
 ## 8. Results
 
-This section is reserved for adding final project outputs, screenshots, model results, and clustering results.
+This section summarizes the actual outputs from the notebook and provides placeholders for GitHub result images.
 
-### 8.1 Model Comparison Result
+### 8.1 Classification Model Results
 
-Add model comparison chart or table here.
+The project tested three supervised learning models. Balanced accuracy was used because the churn class is imbalanced.
 
-```markdown
-![Model Comparison](images/model_comparison.png)
-```
+| Model | Balanced Accuracy | Churn Precision | Churn Recall | Churn F1-score |
+|---|---:|---:|---:|---:|
+| Logistic Regression | `0.805` | `0.45` | `0.81` | `0.58` |
+| Random Forest | `0.922` | `0.95` | `0.85` | `0.90` |
+| Tuned Random Forest | `0.956` | `0.91` | `0.93` | `0.92` |
 
-Current model performance summary:
-
-| Model | Balanced Accuracy |
-|---|---:|
-| Logistic Regression | 0.805 |
-| Random Forest | 0.922 |
-| Tuned Random Forest | 0.956 |
+The tuned Random Forest model achieved the best balanced accuracy and the strongest churn recall.
 
 ### 8.2 Best Model Result
 
@@ -351,47 +402,125 @@ Best balanced accuracy:
 0.956
 ```
 
-Placeholder for confusion matrix or classification report:
+Best Random Forest parameters:
 
-```markdown
-![Confusion Matrix](images/confusion_matrix.png)
-![Classification Report](images/classification_report.png)
+```text
+bootstrap: False
+max_depth: None
+min_samples_leaf: 2
+min_samples_split: 5
+n_estimators: 200
 ```
 
-### 8.3 Feature Importance Result
+### 8.3 Confusion Matrix Results
 
-Add feature importance chart here.
+#### Logistic Regression
+
+```text
+[[749 187]
+ [ 36 154]]
+```
+
+Interpretation:
+
+- Logistic Regression catches many churned customers with recall `0.81`.
+- However, precision for churn is only `0.45`, meaning it creates many false churn alerts.
+
+#### Random Forest
+
+```text
+[[927   9]
+ [ 28 162]]
+```
+
+Interpretation:
+
+- Random Forest improves both precision and recall.
+- It reduces false positives significantly compared with Logistic Regression.
+
+#### Tuned Random Forest
+
+```text
+[[918  18]
+ [ 13 177]]
+```
+
+Interpretation:
+
+- Tuned Random Forest correctly identifies `177` out of `190` churned customers in the test set.
+- It misses only `13` churned customers.
+- This is the best model for proactive churn prevention.
+
+### 8.4 GitHub Result Image Placeholders
+
+After running the upgraded notebook, add exported images to the `images/` folder and reference them here.
+
+```markdown
+![Model Comparison](images/model_comparison.png)
+![Confusion Matrix](images/confusion_matrix.png)
+![ROC and PR Curves](images/roc_pr_curves.png)
+![Threshold Tuning](images/threshold_tuning.png)
+![Feature Importance](images/feature_importance.png)
+```
+
+### 8.5 Feature Importance Result
+
+The upgraded notebook includes a feature importance section for the tuned Random Forest model.
+
+Use this section to explain:
+
+- Which variables have the strongest influence on churn prediction
+- Whether `Tenure`, `Complain`, `CashbackAmount`, `OrderCount`, or `DaySinceLastOrder` are key churn indicators
+- How the business can use important features to build churn monitoring rules
+
+Placeholder:
 
 ```markdown
 ![Feature Importance](images/feature_importance.png)
 ```
 
-Suggested points to describe:
+### 8.6 Churned Customer Segmentation Result
 
-- Which variables are most important for churn prediction
-- Whether complaint, tenure, cashback, order count, or days since last order are strong churn indicators
-- How the business can use these variables for retention targeting
+KMeans clustering was applied only to churned customers.
 
-### 8.4 Customer Segmentation Result
+```text
+Number of churned customers: 948
+Number of clusters: 7
+```
 
-Add churned customer clustering visuals here.
+Segment distribution:
+
+| Segment | Share of Churned Customers |
+|---|---:|
+| Segment 3 | `31.65%` |
+| Segment 1 | `23.52%` |
+| Segment 2 | `19.51%` |
+| Segment 4 | `13.50%` |
+| Segment 6 | `7.59%` |
+| Segment 5 | `2.11%` |
+| Segment 0 | `2.11%` |
+
+### 8.7 Segment Profile and Suggested Actions
+
+| Segment | Key Characteristics From Notebook | Suggested Action |
+|---|---|---|
+| Segment 0 | Small group, higher tenure, high order count, very high cashback | Premium win-back offer for valuable lost customers |
+| Segment 1 | Larger group, moderate tenure, higher warehouse distance, moderate order count | Personalized retention offer and delivery support |
+| Segment 2 | Low tenure, lower cashback, high complaint rate | Complaint recovery and early-life retention campaign |
+| Segment 3 | Largest churned segment, low tenure, low cashback, low order count | Broad reactivation campaign with onboarding incentive |
+| Segment 4 | City Tier 3, high warehouse distance, high complaint rate, E-wallet dominant | Delivery support and service recovery campaign |
+| Segment 5 | Small group, higher order count, high cashback, longer inactivity | High-value reactivation with personalized category offer |
+| Segment 6 | UPI dominant, high warehouse distance, high complaint rate | Payment-experience review and delivery compensation |
+
+### 8.8 Clustering Result Image Placeholders
+
+After running the upgraded notebook, add clustering visuals here.
 
 ```markdown
 ![Elbow Method](images/elbow_method.png)
-![Churned Customer Segments](images/churned_customer_segments.png)
+![Churned Customer Segments PCA](images/churned_customer_segments_pca.png)
 ```
 
-Suggested segment result table:
-
-| Segment | Main Characteristics | Suggested Action |
-|---|---|---|
-| Segment 0 | Add segment description | Add retention strategy |
-| Segment 1 | Add segment description | Add retention strategy |
-| Segment 2 | Add segment description | Add retention strategy |
-| Segment 3 | Add segment description | Add retention strategy |
-| Segment 4 | Add segment description | Add retention strategy |
-| Segment 5 | Add segment description | Add retention strategy |
-| Segment 6 | Add segment description | Add retention strategy |
 
 ---
 
@@ -489,10 +618,26 @@ Recommended actions:
 
 ## 13. Conclusion
 
-This project shows that churn prediction can help the company identify high-risk customers before they leave.
+This project shows that machine learning can help an e-commerce company identify high-risk customers before they leave.
 
-The tuned Random Forest model achieved the best performance with a balanced accuracy of `0.956`, outperforming Logistic Regression and the baseline Random Forest model.
+The dataset contains `5,630` customers, with `948` churned customers and a churn rate of `16.84%`. Because the target class is imbalanced, balanced accuracy and churn recall are more useful than normal accuracy alone.
 
-Customer segmentation further shows that churned customers have different behavioral patterns. Therefore, retention strategies should be targeted by churn segment rather than applying one general promotion to all churned users.
+The tuned Random Forest model achieved the best performance:
 
-Overall, the project demonstrates how machine learning can support customer retention by combining predictive modeling, behavioral segmentation, and business-focused recommendations.
+- Balanced Accuracy: `0.956`
+- Churn Precision: `0.91`
+- Churn Recall: `0.93`
+- Churn F1-score: `0.92`
+
+The model correctly identified most churned customers in the test set, missing only `13` churned customers. This makes it suitable for proactive retention targeting.
+
+The clustering analysis shows that churned customers are not one homogeneous group. Different churned segments show different patterns, such as low tenure, high complaint rate, long warehouse distance, high cashback, or high historical order count.
+
+Overall, the project demonstrates how supervised learning and customer segmentation can work together to support practical business actions:
+
+- Predict customers likely to churn
+- Understand churn drivers
+- Prioritize high-risk customers
+- Design targeted retention campaigns
+- Build segment-specific win-back strategies
+
