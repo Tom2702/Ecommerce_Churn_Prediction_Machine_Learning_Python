@@ -92,29 +92,10 @@ Notes:
 The notebook uses a flexible loader so the project can run in Google Colab or locally.
 
 ```python
-from pathlib import Path
-import pandas as pd
-
-candidate_files = [
-    Path("/content/drive/MyDrive/Churn_prediction.xlsx"),
-    Path("/content/drive/MyDrive/churn_predict.csv"),
-    Path("Churn_prediction.xlsx"),
-    Path("churn_predict.csv"),
-]
-
-data_path = next((file for file in candidate_files if file.exists()), None)
-
-if data_path is None:
-    raise FileNotFoundError("Dataset not found. Please update the dataset path.")
-
-if data_path.suffix.lower() in [".xlsx", ".xls"]:
-    df = pd.read_excel(data_path)
-elif data_path.suffix.lower() == ".csv":
-    df = pd.read_csv(data_path)
-
-print(f"Loaded dataset: {data_path}")
+df = pd.read_excel("/content/drive/MyDrive/Churn_prediction.xlsx")
 df.head()
 ```
+<img width="2956" height="347" alt="image" src="https://github.com/user-attachments/assets/e306e62a-8d3b-485d-bdaf-01b8ff70cec3" />
 
 ---
 
