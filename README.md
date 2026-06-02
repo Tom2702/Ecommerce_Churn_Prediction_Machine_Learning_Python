@@ -6,11 +6,12 @@
 
 1. [Objective](#1-objective)
 2. [Dataset Description](#2-dataset-description)
-3. [Main Process: Source Code and Output](#3-main-process-source-code-and-output)
+3. [Main Process](#3-main-process)
+   - [Supervised Learning](#supervised-learning)
+   - [Unsupervised Learning](#unsupervised-learning)
 4. [Final Results](#4-final-results)
 5. [Business Recommendations](#5-business-recommendations)
 6. [Conclusion](#6-conclusion)
-7. [How To Run](#7-how-to-run)
 
 ---
 
@@ -181,7 +182,7 @@ for col in num_cols:
 
 **Output**
 
-<img width="1000" height="1955" alt="image" src="https://github.com/user-attachments/assets/0575ea70-fe55-4bc6-b225-cecc235eca3e" />
+<img width="1076" height="2132" alt="image" src="https://github.com/user-attachments/assets/73486e78-afa0-4e7c-84bf-227acacbfc6d" />
 
 **Source code**
 
@@ -268,6 +269,7 @@ for col in cat_cols:
 <img width="786" height="437" alt="image" src="https://github.com/user-attachments/assets/63605111-a6fd-4aa5-9ddb-239e12702c39" />
 
 ```python
+# Standardize inconsistent category labels
 if 'PreferredLoginDevice' in df.columns:
     df['PreferredLoginDevice'] = df['PreferredLoginDevice'].replace({
         'Phone': 'Mobile Phone',
@@ -321,34 +323,27 @@ Outlier review:
 - CashbackAmount is also right-skewed, suggesting some customers receive much higher cashback than the median.
 ```
 
-**Result image placeholder**
+**Result**
 
-```markdown
-![Outlier Boxplots](images/outlier_boxplots.png)
-```
+<img width="1430" height="3090" alt="image" src="https://github.com/user-attachments/assets/9abeb915-9277-42d1-b90f-1a19218489ef" />
 
 ### 3.6 Relationship Between Features and Churn
 
 **Source code**
 
 ```python
+# Numerical Features vs Churn
 df.groupby('Churn')[num_cols].mean()
 df.groupby('Churn')[num_cols].median()
 ```
 
 **Output: Mean comparison**
 
-| Churn | Tenure | WarehouseToHome | HourSpendOnApp | Devices | Addresses | Amount Hike | Coupon Used | Order Count | Days Since Last Order | Cashback |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 11.40 | 15.31 | 2.93 | 3.64 | 4.16 | 15.69 | 1.72 | 2.99 | 4.71 | 180.64 |
-| 1 | 3.86 | 16.86 | 2.96 | 3.93 | 4.47 | 15.62 | 1.71 | 2.81 | 3.22 | 160.37 |
+<img width="1872" height="176" alt="image" src="https://github.com/user-attachments/assets/370598b5-9e63-4de7-af99-f330e33faa3f" />
 
 **Output: Median comparison**
 
-| Churn | Tenure | WarehouseToHome | HourSpendOnApp | Devices | Addresses | Amount Hike | Coupon Used | Order Count | Days Since Last Order | Cashback |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 10.00 | 14.00 | 3.00 | 4.00 | 3.00 | 15.00 | 1.00 | 2.00 | 3.00 | 166.12 |
-| 1 | 1.00 | 14.00 | 3.00 | 4.00 | 3.00 | 15.00 | 1.00 | 2.00 | 2.50 | 149.66 |
+<img width="1854" height="192" alt="image" src="https://github.com/user-attachments/assets/9ab09fd9-0874-4ae5-b3ab-0cbe9318a9bb" />
 
 **Source code**
 
@@ -358,34 +353,23 @@ sns.heatmap(df[num_cols + ['Churn']].corr(), annot=True, cmap='coolwarm')
 plt.title('Correlation Heatmap')
 plt.show()
 ```
+**Result**
 
-**Result image placeholder**
-
-```markdown
-![Correlation Heatmap](images/correlation_heatmap.png)
-```
+<img width="1496" height="1191" alt="image" src="https://github.com/user-attachments/assets/f2e01dbd-8cc1-465a-a3a5-b03af055bdba" />
 
 **Source code**
 
 ```python
+# Churn Rate by Category
 for col in cat_cols:
     if col != 'Churn':
         churn_rate = df.groupby(col)['Churn'].mean().sort_values(ascending=False)
         print(churn_rate)
 ```
 
-**Output: Churn rate by key categories**
+**Output**
 
-| Category | Highest-Risk Group | Churn Rate |
-|---|---|---:|
-| PreferredLoginDevice | Computer | 19.83% |
-| PreferredPaymentMode | Cash on Delivery | 24.90% |
-| Gender | Male | 17.73% |
-| PreferedOrderCat | Mobile Phone | 27.40% |
-| MaritalStatus | Single | 26.73% |
-| Complain | Complaint = 1 | 31.67% |
-| CityTier | City Tier 3 | 21.37% |
-| SatisfactionScore | Score 5 | 23.83% |
+<img width="347" height="1030" alt="image" src="https://github.com/user-attachments/assets/d1978c3b-1648-4e8e-b607-c755c6e21566" />
 
 ### 3.7 Churned User Behavior Analysis
 
@@ -414,6 +398,20 @@ Key behavior patterns:
 - Churned users should not be treated as one single group because their behavior differs by tenure, value, complaint status, payment mode, and delivery context.
 ```
 
+---
+
+### Supervised Learning
+
+> **Goal:** Predict the target variable `Churn` using labeled customer data.
+
+| Model / Step | Role |
+|---|---|
+| Logistic Regression | Baseline classification model |
+| Random Forest | Tree-based classification model |
+| GridSearchCV | Hyperparameter tuning for Random Forest |
+| Tuned Random Forest | Final selected supervised learning model |
+| Threshold Tuning | Review precision-recall trade-off for churn targeting |
+
 ### 3.8 Supervised Learning Preparation
 
 **Source code**
@@ -439,16 +437,20 @@ from sklearn.metrics import (
     PrecisionRecallDisplay,
 )
 
+# One-hot encoding
 model_cat_cols = [col for col in cat_cols if col != 'Churn']
 df_encoded = pd.get_dummies(df, columns=model_cat_cols, drop_first=True, dtype=int)
 
+# Define features and target
 x = df_encoded.drop(columns=['CustomerID', 'Churn'])
 y = df_encoded['Churn']
 
+#Train-test split
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2, random_state=42, stratify=y
 )
 
+# Scale features for Logistic Regression
 scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 x_test_scaled = scaler.transform(x_test)
@@ -481,19 +483,7 @@ print(classification_report(y_test, y_test_pred))
 
 **Output**
 
-```text
-Logistic Regression
-Balanced Accuracy: 0.8053699955015745
-
-Confusion Matrix:
-[[749, 187],
- [ 36, 154]]
-
-Classification Report:
-Class 0 precision: 0.95, recall: 0.80, f1-score: 0.87
-Class 1 precision: 0.45, recall: 0.81, f1-score: 0.58
-Accuracy: 0.80
-```
+<img width="576" height="311" alt="image" src="https://github.com/user-attachments/assets/7a5def8d-30fd-4d33-8795-c9216ac3739e" />
 
 ### 3.10 Random Forest Model
 
@@ -518,19 +508,7 @@ print(classification_report(y_test, y_test_pred))
 
 **Output**
 
-```text
-Random Forest
-Balanced Accuracy: 0.9215080971659919
-
-Confusion Matrix:
-[[927, 9],
- [ 28, 162]]
-
-Classification Report:
-Class 0 precision: 0.97, recall: 0.99, f1-score: 0.98
-Class 1 precision: 0.95, recall: 0.85, f1-score: 0.90
-Accuracy: 0.97
-```
+<img width="577" height="314" alt="image" src="https://github.com/user-attachments/assets/a068b41c-12b1-4bda-9a79-b50968e412f6" />
 
 ### 3.11 Hyperparameter Tuning
 
@@ -560,14 +538,7 @@ print(grid_search.best_params_)
 
 **Output**
 
-```text
-Best Parameters:
-bootstrap: False
-max_depth: None
-min_samples_leaf: 2
-min_samples_split: 5
-n_estimators: 200
-```
+<img width="1101" height="65" alt="image" src="https://github.com/user-attachments/assets/e3f0ab2e-5e8e-45c8-9642-fd47904f6acb" />
 
 ### 3.12 Tuned Random Forest Evaluation
 
@@ -586,19 +557,7 @@ print(classification_report(y_test, y_pred_best_rf))
 
 **Output**
 
-```text
-Tuned Random Forest
-Balanced Accuracy: 0.956174089068826
-
-Confusion Matrix:
-[[918, 18],
- [ 13, 177]]
-
-Classification Report:
-Class 0 precision: 0.99, recall: 0.98, f1-score: 0.98
-Class 1 precision: 0.91, recall: 0.93, f1-score: 0.92
-Accuracy: 0.97
-```
+<img width="604" height="320" alt="image" src="https://github.com/user-attachments/assets/5fdfb78e-222f-4618-a712-d6c0784bb60e" />
 
 ### 3.13 Model Comparison and Advanced Evaluation
 
@@ -645,11 +604,8 @@ model_results_df
 
 **Output**
 
-| Model | Accuracy | Balanced Accuracy | Precision | Recall | F1-score |
-|---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.80 | 0.805 | 0.45 | 0.81 | 0.58 |
-| Random Forest | 0.97 | 0.922 | 0.95 | 0.85 | 0.90 |
-| Tuned Random Forest | 0.97 | 0.956 | 0.91 | 0.93 | 0.92 |
+<img width="1334" height="172" alt="image" src="https://github.com/user-attachments/assets/0810685d-2888-4690-8724-afa66a9418ae" />
+<img width="1455" height="829" alt="image" src="https://github.com/user-attachments/assets/c6d86a2b-f53f-457e-83d3-50160f587349" />
 
 **Source code**
 
@@ -665,21 +621,39 @@ plt.title('Confusion Matrix - Tuned Random Forest')
 plt.show()
 ```
 
-**Result image placeholders**
+**Result**
 
-```markdown
-![Model Comparison](images/model_comparison.png)
-![Confusion Matrix](images/confusion_matrix.png)
-![ROC and PR Curves](images/roc_pr_curves.png)
-![Threshold Tuning](images/threshold_tuning.png)
-![Feature Importance](images/feature_importance.png)
+<img width="818" height="847" alt="image" src="https://github.com/user-attachments/assets/4039ff22-24e2-4d78-af6f-ebd79b7d29a8" />
+
+**Source code**
+
+```python
+# ROC and Precision-Recall curves for the best model
+y_proba_best_rf = best_rf_model.predict_proba(x_test)[:, 1]
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+RocCurveDisplay.from_predictions(y_test, y_proba_best_rf, ax=axes[0])
+axes[0].set_title("ROC Curve - Tuned Random Forest")
+
+PrecisionRecallDisplay.from_predictions(y_test, y_proba_best_rf, ax=axes[1])
+axes[1].set_title("Precision-Recall Curve - Tuned Random Forest")
+
+plt.tight_layout()
+plt.savefig(result_dir / "roc_pr_curves.png", dpi=150, bbox_inches="tight")
+plt.show()
 ```
+
+**Result**
+
+<img width="1551" height="671" alt="image" src="https://github.com/user-attachments/assets/8abb6203-0b22-4f2b-825a-9a9527aab4ae" />
 
 ### 3.14 Threshold Tuning
 
 **Source code**
 
 ```python
+# Test multiple probability thresholds for churn prediction
 y_proba_best_rf = best_rf_model.predict_proba(x_test)[:, 1]
 thresholds = np.arange(0.10, 0.91, 0.05)
 threshold_results = []
@@ -698,11 +672,64 @@ threshold_results_df = pd.DataFrame(threshold_results)
 threshold_results_df.sort_values('F1-score (Churn=1)', ascending=False).head(10)
 ```
 
-**Output placeholder**
+**Output**
 
-```markdown
-![Threshold Tuning Result](images/threshold_tuning_result.png)
+<img width="959" height="481" alt="image" src="https://github.com/user-attachments/assets/7ba85a63-0fad-48d1-9095-bb606dab2026" />
+
+**Source code**
+
+```python
+# Plot threshold trade-off
+plt.figure(figsize=(10, 6))
+plt.plot(threshold_results_df["Threshold"], threshold_results_df["Precision (Churn=1)"], marker="o", label="Precision")
+plt.plot(threshold_results_df["Threshold"], threshold_results_df["Recall (Churn=1)"], marker="o", label="Recall")
+plt.plot(threshold_results_df["Threshold"], threshold_results_df["F1-score (Churn=1)"], marker="o", label="F1-score")
+plt.plot(threshold_results_df["Threshold"], threshold_results_df["Balanced Accuracy"], marker="o", label="Balanced Accuracy")
+plt.xlabel("Classification Threshold")
+plt.ylabel("Score")
+plt.title("Threshold Tuning for Churn Prediction")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.savefig(result_dir / "threshold_tuning.png", dpi=150, bbox_inches="tight")
+plt.show()
 ```
+
+**Output**
+
+<img width="1327" height="801" alt="image" src="https://github.com/user-attachments/assets/63cf84ea-1f98-4b8a-bec2-e84178b14a3d" />
+
+**Source code**
+
+```python
+# Recommended threshold based on best F1-score for churn class
+best_threshold_row = threshold_results_df.loc[threshold_results_df["F1-score (Churn=1)"].idxmax()]
+best_threshold = best_threshold_row["Threshold"]
+
+print("Recommended threshold based on best F1-score:")
+print(best_threshold_row)
+
+# Business note:
+# If the company wants to catch more churners, choose a lower threshold with higher recall.
+# If the company wants fewer false alarms, choose a higher threshold with higher precision.
+```
+
+**Output**
+
+<img width="476" height="179" alt="image" src="https://github.com/user-attachments/assets/08e17ffb-6df1-474a-9b08-a490b2d28088" />
+
+---
+
+### Unsupervised Learning
+
+> **Goal:** Segment churned customers into different behavioral groups so the business can design targeted win-back and retention actions.
+
+| Method / Step | Role |
+|---|---|
+| K-Means Clustering | Group churned customers based on behavior patterns |
+| Elbow Method | Support the choice of number of clusters |
+| Segment Profiling | Interpret each segment and map it to business actions |
+| PCA Visualization | Display customer segments in two-dimensional space |
 
 ### 3.15 Churned Customer Segmentation
 
@@ -746,11 +773,9 @@ plt.title('Elbow Method')
 plt.show()
 ```
 
-**Result image placeholder**
+**Result**
 
-```markdown
-![Elbow Method](images/elbow_method.png)
-```
+<img width="976" height="639" alt="image" src="https://github.com/user-attachments/assets/a6c976cc-8df5-4fbb-b30f-d812282e6e7e" />
 
 **Source code**
 
@@ -914,7 +939,36 @@ Among the tested models, the tuned Random Forest performs best, with a balanced 
 
 ---
 
+## 7. How To Run
 
+Clone the repository:
+
+```bash
+git clone https://github.com/Tom2702/ML_Ecommerce_Churn_Prediction_Python.git
+cd ML_Ecommerce_Churn_Prediction_Python
+```
+
+Install dependencies:
+
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn joblib openpyxl
+```
+
+Run the notebook:
+
+```text
+ML_Project.ipynb
+```
+
+Recommended workflow:
+
+1. Place `Churn_prediction.xlsx` or `churn_predict.csv` in the same directory as the notebook.
+2. Run all notebook cells from top to bottom.
+3. Export charts into the `images/` folder.
+4. Replace the placeholder image paths in this README with the exported result images.
+5. Upload the notebook, README, dataset, and result images to GitHub.
+
+---
 
 
 
