@@ -186,9 +186,14 @@ for col in num_cols:
 **Source code**
 
 ```python
+# Distribution of Categorical Variables
 for col in cat_cols:
     print(col)
+
+    # Count how many times each category appears
     print(df[col].value_counts())
+
+    # Calculate the percentage of each category
     print(df[col].value_counts(normalize=True) * 100)
 ```
 
@@ -205,11 +210,9 @@ for col in cat_cols:
 | `CityTier` | City Tier 1 accounts for 65.12% of customers |
 | `SatisfactionScore` | Score 3 is the most common satisfaction score at 30.16% |
 
-**Result image placeholder**
+**Result**
 
-```markdown
-![Categorical Distribution](images/categorical_distribution.png)
-```
+<img width="350" height="1364" alt="image" src="https://github.com/user-attachments/assets/253b46a6-e3ec-496a-8cce-4b008e26da9e" />
 
 ### 3.4 Missing Values and Data Cleaning
 
