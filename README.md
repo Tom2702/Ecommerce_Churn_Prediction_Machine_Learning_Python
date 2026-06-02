@@ -237,9 +237,11 @@ df.isnull().mean() * 100
 **Source code**
 
 ```python
+# Fill missing values in numeric columns with median
 for col in num_cols:
     df[col] = df[col].fillna(df[col].median())
 
+# Fill missing values in categorical columns with mode
 for col in cat_cols:
     df[col] = df[col].fillna(df[col].mode()[0])
 ```
@@ -254,6 +256,16 @@ Missing value handling:
 ```
 
 **Source code**
+
+```python
+# Inconsistent Catrgory Handling
+for col in cat_cols:
+  print(col)
+  print(df[col].unique())
+```
+**Output**
+
+<img width="786" height="437" alt="image" src="https://github.com/user-attachments/assets/63605111-a6fd-4aa5-9ddb-239e12702c39" />
 
 ```python
 if 'PreferredLoginDevice' in df.columns:
