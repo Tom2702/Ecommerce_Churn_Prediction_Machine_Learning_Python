@@ -4,18 +4,17 @@
 
 ## Table of Contents
 
-1. [Project Objective](#1-project-objective)
+1. [Objective](#1-objective)
 2. [Dataset Description](#2-dataset-description)
 3. [Main Process: Source Code and Output](#3-main-process-source-code-and-output)
 4. [Final Results](#4-final-results)
 5. [Business Recommendations](#5-business-recommendations)
 6. [Conclusion](#6-conclusion)
 7. [How To Run](#7-how-to-run)
-8. [Repository Structure](#8-repository-structure)
 
 ---
 
-## 1. Project Objective
+## 1. Objective
 
 This project analyzes customer churn behavior for an e-commerce business and builds machine learning models to predict whether a customer is likely to churn. The project also segments churned customers into behavioral groups so that the business can design more targeted retention and win-back strategies.
 
@@ -99,29 +98,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 
-candidate_files = [
-    Path('/content/drive/MyDrive/Churn_prediction.xlsx'),
-    Path('/content/drive/MyDrive/churn_predict.csv'),
-    Path('Churn_prediction.xlsx'),
-    Path('churn_predict.csv'),
-]
-
-data_path = next((file for file in candidate_files if file.exists()), None)
-
-if data_path is None:
-    raise FileNotFoundError(
-        'Dataset not found. Please place churn_predict.csv or Churn_prediction.xlsx '
-        'in the notebook directory, or update candidate_files with the correct path.'
-    )
-
-if data_path.suffix.lower() in ['.xlsx', '.xls']:
-    df = pd.read_excel(data_path)
-elif data_path.suffix.lower() == '.csv':
-    df = pd.read_csv(data_path)
-else:
-    raise ValueError(f'Unsupported file format: {data_path.suffix}')
-
-print(f'Loaded dataset: {data_path}')
+df = pd.read_excel("/content/drive/MyDrive/Churn_prediction.xlsx")
 df.head()
 ```
 
@@ -142,7 +119,7 @@ Memory usage: 879.8+ KB
 **Result image placeholder**
 
 ```markdown
-![Dataset Preview](images/dataset_preview.png)
+<img width="3108" height="319" alt="image" src="https://github.com/user-attachments/assets/8c590805-4a59-430e-8c94-c21ac0a5faa9" />
 ```
 
 ### 3.2 Feature Classification
@@ -982,26 +959,5 @@ Recommended workflow:
 
 ---
 
-## 8. Repository Structure
 
-```text
-.
-├── ML_Project.ipynb
-├── Churn_prediction.xlsx
-├── README.md
-└── images/
-    ├── project_banner.png
-    ├── dataset_preview.png
-    ├── numerical_distribution.png
-    ├── categorical_distribution.png
-    ├── outlier_boxplots.png
-    ├── correlation_heatmap.png
-    ├── model_comparison.png
-    ├── confusion_matrix.png
-    ├── roc_pr_curves.png
-    ├── threshold_tuning.png
-    ├── feature_importance.png
-    ├── elbow_method.png
-    └── churned_customer_segments_pca.png
-```
 
