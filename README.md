@@ -1,11 +1,5 @@
 ﻿# E-Commerce Churn Prediction & Segmentation For Retention Strategy | Machine Learning - Python
 
-Author: Anh Tuan Nguyen  
-Date: June 2026  
-Tools Used: Python, pandas, numpy, matplotlib, seaborn, scikit-learn, Jupyter Notebook / Google Colab
-
-![Project Banner](images/project_banner.png)
-
 ---
 
 ## Table of Contents
