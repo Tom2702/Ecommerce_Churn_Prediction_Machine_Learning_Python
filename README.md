@@ -807,11 +807,9 @@ silhouette_avg = silhouette_score(cluster_data_scaled, churn_df['Segment'])
 print(f'Silhouette Score for k={optimal_k}: {silhouette_avg:.4f}')
 ```
 
-**Result output placeholder**
+**Result**
 
-```markdown
-![Silhouette Score Output](images/silhouette_score_output.png)
-```
+<img width="391" height="40" alt="image" src="https://github.com/user-attachments/assets/ac6ab199-5c36-4782-a0c4-48f0ada5ce67" />
 
 ### 3.16 Segment Profiling
 
@@ -856,13 +854,153 @@ plt.title('PCA Visualization of Churned Customer Segments')
 plt.show()
 ```
 
-**Result image placeholder**
+**Result**
 
-```markdown
-![Churned Customer Segments PCA](images/churned_customer_segments_pca.png)
+<img width="1332" height="934" alt="image" src="https://github.com/user-attachments/assets/192949d8-694a-44bd-b516-63b09ba2ae9b" />
+
+**Source code**
+
+```python
+# Percentage of churn customers by segment
+churn_df["Segment"].value_counts(normalize=True) * 100
 ```
 
+**Output**
+
+<img width="225" height="402" alt="image" src="https://github.com/user-attachments/assets/df6932d0-a176-4319-b792-e7b1c1ee5249" />
+
+**Source code**
+
+```python
+# Compare numerical features across churned user segments
+num_cols_cluster = churn_df.select_dtypes(include=np.number).columns.tolist()
+num_cols_cluster = [
+    col for col in num_cols_cluster
+    if col not in ["CustomerID", "Churn", "Segment"]
+]
+
+churn_df.groupby("Segment")[num_cols_cluster].mean().T
+```
+
+**Output**
+
+<img width="1067" height="595" alt="image" src="https://github.com/user-attachments/assets/54392847-b850-4371-9644-87f67da18ccc" />
+
+**Source code**
+
+```python
+# Compare categorical features across churned user segments
+cat_cols_cluster = churn_df.select_dtypes(include="object").columns.tolist()
+
+for col in cat_cols_cluster:
+    print(f"\n{col}")
+    print(pd.crosstab(churn_df["Segment"], churn_df[col], normalize="index") * 100)
+```
+
+**Output**
+
+<img width="827" height="1356" alt="image" src="https://github.com/user-attachments/assets/9848d5cb-e1b0-4fc8-92f0-611d9ca03545" />
+
+### 3.17 Segment Profiling and Business Actions
+
+This section summarizes each churned customer segment and maps it to a practical retention or win-back action.
+
+**Source code**
+
+```python
+# Segment size summary
+segment_size = (
+    churn_df["Segment"]
+    .value_counts()
+    .sort_index()
+    .rename_axis("Segment")
+    .reset_index(name="Customer Count")
+)
+segment_size["Customer Share"] = segment_size["Customer Count"] / segment_size["Customer Count"].sum()
+segment_size
+```
+
+**Output**
+
+<img width="447" height="355" alt="image" src="https://github.com/user-attachments/assets/3d14ca58-c9cd-454e-b8f1-5d94878fd3d8" />
+
+**Source code**
+
+```python
+# Numerical segment profile
+segment_numeric_profile = churn_df.groupby("Segment")[num_cols_cluster].mean().round(2)
+segment_numeric_profile
+```
+
+**Output**
+
+<img width="2256" height="394" alt="image" src="https://github.com/user-attachments/assets/841e4815-a24e-4016-9fdc-ce76d004e719" />
+
+**Source code**
+
+```python
+# Top categorical value per segment
+segment_categorical_profile = []
+
+for segment, segment_df in churn_df.groupby("Segment"):
+    row = {"Segment": segment}
+    for col in cat_cols_cluster:
+        top_value = segment_df[col].mode(dropna=True)
+        row[col] = top_value.iloc[0] if len(top_value) > 0 else np.nan
+    segment_categorical_profile.append(row)
+
+segment_categorical_profile_df = pd.DataFrame(segment_categorical_profile).sort_values("Segment")
+segment_categorical_profile_df
+```
+
+**Output**
+
+<img width="1008" height="359" alt="image" src="https://github.com/user-attachments/assets/53e2b15a-9191-46b1-8743-65ad23b65413" />
+
+**Source code**
+
+```python
+# Business action template by segment
+segment_action_plan = pd.DataFrame({
+    "Segment": sorted(churn_df["Segment"].unique()),
+    "Segment Name": [
+        "New / Low Engagement Churners",
+        "Complaint-Driven Churners",
+        "Distance-Sensitive Churners",
+        "Promotion-Sensitive Churners",
+        "High-Value Lost Customers",
+        "Low Activity Churners",
+        "Mixed Risk Churners",
+    ][:churn_df["Segment"].nunique()],
+    "Recommended Action": [
+        "Send welcome voucher and onboarding campaign",
+        "Prioritize service recovery and compensation voucher",
+        "Offer delivery support or delivery fee incentive",
+        "Send personalized coupon or cashback campaign",
+        "Create premium win-back offer based on past behavior",
+        "Use reactivation campaign with limited-time incentive",
+        "Monitor behavior and test personalized retention offer",
+    ][:churn_df["Segment"].nunique()],
+})
+
+segment_action_plan
+```
+
+**Output**
+
+| Segment | Segment Name | Recommended Action |
+|---:|---|---|
+| 0 | New / Low Engagement Churners | Send welcome voucher and onboarding campaign |
+| 1 | Complaint-Driven Churners | Prioritize service recovery and compensation voucher |
+| 2 | Distance-Sensitive Churners | Offer delivery support or delivery fee incentive |
+| 3 | Promotion-Sensitive Churners | Send personalized coupon or cashback campaign |
+| 4 | High-Value Lost Customers | Create premium win-back offer based on past behavior |
+| 5 | Low Activity Churners | Use reactivation campaign with limited-time incentive |
+| 6 | Mixed Risk Churners | Monitor behavior and test personalized retention offer |
+
+
 ---
+
 
 ## 4. Final Results
 
@@ -939,36 +1077,7 @@ Among the tested models, the tuned Random Forest performs best, with a balanced 
 
 ---
 
-## 7. How To Run
 
-Clone the repository:
-
-```bash
-git clone https://github.com/Tom2702/ML_Ecommerce_Churn_Prediction_Python.git
-cd ML_Ecommerce_Churn_Prediction_Python
-```
-
-Install dependencies:
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn joblib openpyxl
-```
-
-Run the notebook:
-
-```text
-ML_Project.ipynb
-```
-
-Recommended workflow:
-
-1. Place `Churn_prediction.xlsx` or `churn_predict.csv` in the same directory as the notebook.
-2. Run all notebook cells from top to bottom.
-3. Export charts into the `images/` folder.
-4. Replace the placeholder image paths in this README with the exported result images.
-5. Upload the notebook, README, dataset, and result images to GitHub.
-
----
 
 
 
