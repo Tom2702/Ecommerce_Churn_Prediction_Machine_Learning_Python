@@ -100,26 +100,15 @@ from pathlib import Path
 
 df = pd.read_excel("/content/drive/MyDrive/Churn_prediction.xlsx")
 df.head()
+df.shape
+df.info()
 ```
 
-**Output**
-
-```text
-Loaded dataset: Churn_prediction.xlsx
-Dataset shape: (5630, 20)
-```
-
-```text
-Data columns: 20 columns
-Rows: 5,630
-Dtypes: float64(8), int64(7), object(5)
-Memory usage: 879.8+ KB
-```
-
-**Result image placeholder**
+**Result**
 
 <img width="3108" height="319" alt="image" src="https://github.com/user-attachments/assets/8c590805-4a59-430e-8c94-c21ac0a5faa9" />
 
+<img width="613" height="650" alt="image" src="https://github.com/user-attachments/assets/65ef2f4b-2082-465b-b3f0-931a66c7b5ad" />
 
 ### 3.2 Feature Classification
 
