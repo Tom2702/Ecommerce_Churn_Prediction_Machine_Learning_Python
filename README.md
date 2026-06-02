@@ -85,7 +85,7 @@ churn_predict.csv
 
 ---
 
-## 3. Main Process: Source Code and Output
+## 3. Main Process
 
 ### 3.1 Data Loading and Initial Inspection
 
@@ -104,7 +104,7 @@ df.shape
 df.info()
 ```
 
-**Result**
+**Output**
 
 <img width="3108" height="319" alt="image" src="https://github.com/user-attachments/assets/8c590805-4a59-430e-8c94-c21ac0a5faa9" />
 
@@ -115,12 +115,17 @@ df.info()
 **Source code**
 
 ```python
+# Identify ID Column
 id_cols = ['CustomerID']
+
+# Numeric columns to treat as categorical
 cat_manual = ['Churn', 'Complain', 'CityTier', 'SatisfactionScore']
 
+# Numerical variables
 num_cols = df.select_dtypes(include=np.number).columns.tolist()
 num_cols = [col for col in num_cols if col not in id_cols and col not in cat_manual]
 
+# Categorical variables
 cat_cols = df.select_dtypes(include='object').columns.tolist()
 cat_cols = cat_cols + [col for col in cat_manual if col in df.columns]
 
@@ -146,44 +151,24 @@ MaritalStatus, Churn, Complain, CityTier, SatisfactionScore
 **Source code**
 
 ```python
+# Distribution of Numerical Variables
 df[num_cols].describe().T
 ```
 
 **Output**
 
-| Feature | Count | Mean | Std | Min | Median | Max |
-|---|---:|---:|---:|---:|---:|---:|
-| Tenure | 5,366 | 10.19 | 8.56 | 0.00 | 9.00 | 61.00 |
-| WarehouseToHome | 5,379 | 15.64 | 8.53 | 5.00 | 14.00 | 127.00 |
-| HourSpendOnApp | 5,375 | 2.93 | 0.72 | 0.00 | 3.00 | 5.00 |
-| NumberOfDeviceRegistered | 5,630 | 3.69 | 1.02 | 1.00 | 4.00 | 6.00 |
-| NumberOfAddress | 5,630 | 4.21 | 2.58 | 1.00 | 3.00 | 22.00 |
-| OrderAmountHikeFromlastYear | 5,365 | 15.71 | 3.68 | 11.00 | 15.00 | 26.00 |
-| CouponUsed | 5,374 | 1.75 | 1.89 | 0.00 | 1.00 | 16.00 |
-| OrderCount | 5,372 | 3.01 | 2.94 | 1.00 | 2.00 | 16.00 |
-| DaySinceLastOrder | 5,323 | 4.54 | 3.65 | 0.00 | 3.00 | 46.00 |
-| CashbackAmount | 5,630 | 177.22 | 49.21 | 0.00 | 163.28 | 324.99 |
+<img width="992" height="477" alt="image" src="https://github.com/user-attachments/assets/e90f14db-3563-47a1-8e87-0e4f133a8aa3" />
 
 **Source code**
 
 ```python
+# Skewness of Numerical Variables
 df[num_cols].skew()
 ```
 
 **Output**
 
-| Feature | Skewness |
-|---|---:|
-| Tenure | 0.737 |
-| WarehouseToHome | 1.619 |
-| HourSpendOnApp | -0.027 |
-| NumberOfDeviceRegistered | -0.397 |
-| NumberOfAddress | 1.089 |
-| OrderAmountHikeFromlastYear | 0.791 |
-| CouponUsed | 2.546 |
-| OrderCount | 2.196 |
-| DaySinceLastOrder | 1.191 |
-| CashbackAmount | 1.150 |
+<img width="402" height="476" alt="image" src="https://github.com/user-attachments/assets/c6dc5fae-945a-4e87-9294-31e248b967b1" />
 
 **Source code**
 
@@ -194,11 +179,9 @@ for col in num_cols:
     plt.show()
 ```
 
-**Result image placeholder**
+**Output**
 
-```markdown
-![Numerical Distribution](images/numerical_distribution.png)
-```
+<img width="1000" height="1955" alt="image" src="https://github.com/user-attachments/assets/0575ea70-fe55-4bc6-b225-cecc235eca3e" />
 
 **Source code**
 
