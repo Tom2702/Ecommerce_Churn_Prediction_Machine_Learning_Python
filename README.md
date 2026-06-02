@@ -914,36 +914,7 @@ Among the tested models, the tuned Random Forest performs best, with a balanced 
 
 ---
 
-## 7. How To Run
 
-Clone the repository:
-
-```bash
-git clone https://github.com/Tom2702/ML_Ecommerce_Churn_Prediction_Python.git
-cd ML_Ecommerce_Churn_Prediction_Python
-```
-
-Install dependencies:
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn joblib openpyxl
-```
-
-Run the notebook:
-
-```text
-ML_Project.ipynb
-```
-
-Recommended workflow:
-
-1. Place `Churn_prediction.xlsx` or `churn_predict.csv` in the same directory as the notebook.
-2. Run all notebook cells from top to bottom.
-3. Export charts into the `images/` folder.
-4. Replace the placeholder image paths in this README with the exported result images.
-5. Upload the notebook, README, dataset, and result images to GitHub.
-
----
 
 
 
