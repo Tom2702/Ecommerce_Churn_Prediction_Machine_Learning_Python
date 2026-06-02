@@ -118,9 +118,8 @@ Memory usage: 879.8+ KB
 
 **Result image placeholder**
 
-```markdown
 <img width="3108" height="319" alt="image" src="https://github.com/user-attachments/assets/8c590805-4a59-430e-8c94-c21ac0a5faa9" />
-```
+
 
 ### 3.2 Feature Classification
 
